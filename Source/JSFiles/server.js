@@ -13,7 +13,7 @@ const { checkUserCredentials, addUser } = require('./credentialsService');
 app.get(['/', '/:htmlPage'], (req, res) => {
     const defaultPage = 'index.html';
     const htmlPage = req.params.htmlPage || defaultPage;
-    const htmlFile = '.' + htmlFolderRelPath + htmlPage;
+    const htmlFile = path.join(__dirname, htmlFolderRelPath, htmlPage);
     fs.exists(htmlFile, (fileExists) => {
         console.log(`request received for ${htmlPage}`);
         if (!fileExists) {
