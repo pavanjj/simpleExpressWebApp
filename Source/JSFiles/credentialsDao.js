@@ -1,14 +1,9 @@
 const Credentials = require('./credentials');
 
 
-function checkUserCredentialsDao(pEmail, pPassword) {
+function fetchUserCredentials(pEmail) {
     return new Promise((resolve, reject) => {
-        const query = {
-            $and: [
-                { email: pEmail },
-                { password: pPassword }
-            ]
-        };
+        const query = { email: pEmail };
         Credentials.findOne(query)
             .then(response => {
                 if (!response)
@@ -37,5 +32,5 @@ function addUserDao(userObj) {
 
 module.exports = {
     addUserDao,
-    checkUserCredentialsDao
+    fetchUserCredentials
 }

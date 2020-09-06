@@ -1,10 +1,18 @@
-const { addUserDao, checkUserCredentialsDao } = require('./credentialsDao');
+const bcryptjs = require('bcryptjs');
+const { addUserDao, fetchUserCredentials } = require('./credentialsDao');
 
 function checkUserCredentials(email, password) {
     console.log(`Checking user credentials`);
     return new Promise((resolve, reject) => {
-        checkUserCredentialsDao(email, password)
-            .then(response => resolve(response))
+        fetchUserCredentials(email)
+            .then(response => {
+                if (bcryptjs.compareSync(password, response.password)) {
+                    console.log(`Authentication Successful`);
+                    resolve(response);
+                }
+                else
+                    reject(`Wrong Password`);
+            })
             .catch(error => {
                 console.log(`Error in checking credentials : ${error}`);
                 reject(error)
@@ -14,7 +22,7 @@ function checkUserCredentials(email, password) {
 
 function addUser(email, password) {
     console.log(`Adding a new user with email ${email}`);
-    const userObj = { email, password };
+    const userObj = { email, password: bcryptjs.hashSync(password, 10) };
     return new Promise((resolve, reject) => {
         addUserDao(userObj)
             .then(response => resolve(response))
