@@ -20,11 +20,11 @@ function checkUserCredentials(email, password) {
     })
 }
 
-function addUser(email, password) {
-    console.log(`Adding a new user with email ${email}`);
-    const userObj = { email, password: bcryptjs.hashSync(password, 10) };
+function addUser(userData) {
+    console.log(`Adding a new user with name : ${userData.firstName}`);
+    userData.password = bcryptjs.hashSync(userData.password, 10);
     return new Promise((resolve, reject) => {
-        addUserDao(userObj)
+        addUserDao(userData)
             .then(response => resolve(response))
             .catch(error => reject(error));
     })

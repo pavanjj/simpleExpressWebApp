@@ -21,7 +21,6 @@ function addUserDao(userObj) {
         const newUserCreds = Credentials(userObj);
         newUserCreds.save()
             .then(response => {
-                console.log(response);
                 resolve(response);
             })
             .catch(error => {

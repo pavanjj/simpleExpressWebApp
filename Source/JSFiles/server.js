@@ -34,7 +34,10 @@ app.post('/sign-in', (req, res) => {
     console.log(req.body);
     checkUserCredentials(req.body.email, req.body.password)
         .then((response) => {
-            res.send('<h1>You have been successfully logged in</h1>');
+            if (response.firstName)
+                res.send(`<h1>Hi ${response.firstName} , You have been successfully logged in</h1>`);
+            else
+                res.send(`<h1>Hi , You have been successfully logged in</h1>`);
         })
         .catch((error) => {
             res.status(500).send('<h1>You are not a valid user</h1>')
@@ -43,12 +46,12 @@ app.post('/sign-in', (req, res) => {
 })
 app.post('/sign-up', (req, res) => {
     console.log(req.body);
-    addUser(req.body.email, req.body.password)
+    addUser(req.body)
         .then((response) => {
             res.send('<h1>You are now Signed up !</h1>');
         })
         .catch((error) => {
-            res.status(500).json('<h1>There was an error, please try again</h1>')
+            res.status(500).send('<h1>Looks like this user already exists, try logging in ?</h1>')
         })
 
 })
